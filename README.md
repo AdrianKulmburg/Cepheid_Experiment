@@ -6,7 +6,7 @@ The programs have to be called in a certain order and assume a certain directory
 
 Here is the basic directory structure, for the moment without the data:
 
-_________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -o Data Redution
  |-> day1.sh
  |-> day2.sh
@@ -35,10 +35,10 @@ _________________________________
   general_fit.py
   periodogram.py
   periodogram_reader.py
-  _________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
   The data for each measuring day has to be structured as follows:
-  _________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   Day_n -o
          |-o Dark_For_Flats
          | |-> Put here the darks for the flats
@@ -52,7 +52,7 @@ _________________________________
          | |
          | |-o Science
              |-> Put here the science images
- _________________________________
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
  The files themselves do not need to be named in a certain way, but do need to be fits files with a correct header.
  
