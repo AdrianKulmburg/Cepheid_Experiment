@@ -1,4 +1,5 @@
 # Cepheid Experiment
+## Disclaimer: Please read this readme file in its raw mode by either downloading and reading it or click on the 'Raw' button on the top right in github. This readme file has been structured in such a way that it is easier to read only in this mode.
 
 This repository collects all python programs that were used for the Cepheid experiment performed in winter of 2018 at ETH.
 
@@ -7,62 +8,39 @@ The programs have to be called in a certain order and assume a certain directory
 Here is the basic directory structure, for the moment without the data:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 -o Data Redution
-
- |-> day1.sh
- 
+ |-> day1.sh 
  |-> day2.sh
- 
  |-> day3.sh
- 
  ...
- 
  |-> day_n.sh if more measuring days are available
- 
  |-> data_reduction.py
- 
- 
+  
 -o Day1
-
  | Here comes the data for Day 1
  
- 
 -o Day2
-
  | Here comes the data for Day 2
  
- 
 -o Day3
-
  | Here comes the data for Day 3
- 
  
  ...
  
- 
  -o Day_n
- 
   | If more measuring days are available
   
-  cleaning.py
-  
-  find_flux.py <- This one is obsolete, but was kept to be sure
-  
-  find_relative_flux.py
-  
-  general_fit.py
-  
-  periodogram.py
-  
-  periodogram_reader.py
-  
+cleaning.py
+find_flux.py <- This one is obsolete, but was kept to be sure
+find_relative_flux.py
+general_fit.py
+periodogram.py
+periodogram_reader.py
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
-  The data for each measuring day has to be structured as follows:
+The data for each measuring day has to be structured as follows:
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
   Day_n -o
          |-o Dark_For_Flats
          | |-> Put here the darks for the flats
@@ -75,8 +53,7 @@ Here is the basic directory structure, for the moment without the data:
          | | |-> Put here the darks for the science images
          | |
          | |-o Science
-             |-> Put here the science images
-             
+             |-> Put here the science images          
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
  The files themselves do not need to be named in a certain way, but do need to be fits files with a correct header.
