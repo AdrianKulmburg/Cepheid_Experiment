@@ -194,6 +194,7 @@ def find_relative_flux(star_file, error_file, defining_distance, create_plot = F
             cbar.ax.set_ylabel('Gaussian Fit', fontsize = 15)
             
             savefig(location + "_main_3d.pdf")
+            clf()
             close(2)
 
         if i_want_2d:
@@ -210,6 +211,7 @@ def find_relative_flux(star_file, error_file, defining_distance, create_plot = F
             title("Distribution of photon counts vertically and horizontally of the peak,\ntogether with the Gaussian fit of the curve.", fontsize = 15)
             ylim(bottom = 0.0)
             savefig(location + "_main.pdf")
+            clf()
             close(2)
 
     data = data - data * box_mask
@@ -323,6 +325,7 @@ def find_relative_flux(star_file, error_file, defining_distance, create_plot = F
             cbar.ax.set_ylabel('Gaussian Fit', fontsize = 15)
             
             savefig(location + "_secondary_3d.pdf")
+            clf()
             close(3)
         if i_want_2d:
             errorbar(X[side_peak_x_box, :], (side_box[side_peak_x_box, :]+1), label = 'x-axis', yerr = side_error_box[side_peak_x_box, :])
@@ -338,6 +341,7 @@ def find_relative_flux(star_file, error_file, defining_distance, create_plot = F
             title("Distribution of photon counts vertically and horizontally of the peak,\ntogether with the Gaussian fit of the curve.", fontsize = 15)
             ylim(bottom = 0.0)
             savefig(location + "_secondary.pdf")
+            clf()
             close(3)
 
     distance = sqrt((peak_x - side_peak_x)**2 + (peak_y - side_peak_y)**2)
