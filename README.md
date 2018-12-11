@@ -9,32 +9,52 @@ Here is the basic directory structure, for the moment without the data:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 -o Data Redution
+
  |-> day1.sh
+ 
  |-> day2.sh
+ 
  |-> day3.sh
+ 
  ...
+ 
  |-> day_n.sh if more measuring days are available
+ 
  |-> data_reduction.py
  
+ 
 -o Day1
+
  | Here comes the data for Day 1
  
+ 
 -o Day2
+
  | Here comes the data for Day 2
  
+ 
 -o Day3
+
  | Here comes the data for Day 3
+ 
  
  ...
  
+ 
  -o Day_n
+ 
   | If more measuring days are available
   
   cleaning.py
+  
   find_flux.py <- This one is obsolete, but was kept to be sure
+  
   find_relative_flux.py
+  
   general_fit.py
+  
   periodogram.py
+  
   periodogram_reader.py
   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
