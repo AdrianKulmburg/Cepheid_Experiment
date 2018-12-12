@@ -75,5 +75,9 @@ Also, a pickle file that will be used file will be created, and cleaned by clean
 3. Finally, use
   python3 periodogram_reader.py
 This will output the mean apparent magnitudes, the periods and false alarm probabilites in the console for each star, and a folder called Final_Results will be created with the light curves, the periodograms and the relative phase diagrams for the fitting frequency (NOT the actual frequency) inside for each star.
+
+The file final_coputations.py only computes the last few quantities and has to be manually changed if measurements other than ours are used.
+
+Finally, note that our data can be found at https://www.polybox.ethz.ch/index.php/s/OJar4mwvUdC2puP . This is however a temporary link, as it might expire in 2020.
   
   
