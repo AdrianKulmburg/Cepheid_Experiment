@@ -5,6 +5,7 @@ from astropy.stats import LombScargle
 from scipy.signal import find_peaks
 import os
 import math
+from general_fit import *
 
 number_of_days = 3
 
@@ -32,7 +33,7 @@ def print_all_events(data):
             print(j)
         print('--')
 
-def print_all_stars_separate_days(data, star_name, displayed_star_name, secondary_magnitude, ylimit, period_limits, threshold_selection, number_of_terms = 1, precision = 100000):
+def print_all_stars_separate_days(data, star_name, displayed_star_name, secondary_magnitude, secondary_magnitude_error, ylimit, period_limits, threshold_selection, number_of_terms = 1, precision = 100000):
     T_min = period_limits[0]
     T_max = period_limits[1]
     X = array([])
@@ -50,7 +51,7 @@ def print_all_stars_separate_days(data, star_name, displayed_star_name, secondar
                 yerr = data['fluxes_errors'][event]
                 magnitudes = secondary_magnitude - 2.5 * log10(y)
                 
-                magnitudes_errors = 2.5 * log10(e) * yerr / y
+                magnitudes_errors = sqrt((2.5 * log10(e) * yerr / y)**2 + secondary_magnitude_error**2)
                 axs[i].errorbar(x, magnitudes, yerr = magnitudes_errors, linestyle = '', marker = 'x', color = 'b')
 
                 X = concatenate([X, x])
@@ -117,12 +118,19 @@ def print_all_stars_separate_days(data, star_name, displayed_star_name, secondar
     powers = LombScargle(X, Y, Yerr, nterms = number_of_terms).power(space_for_best_fit)
     best_fit_frequency = space_for_best_fit[argmax(powers)]
     space_for_mean = linspace(0.0, 1.0 / best_fit_frequency, 1000000)
-    values_for_mean = LombScargle(X, Y, Yerr, nterms = number_of_terms).model(space_for_mean, best_fit_frequency)
-    star_mean = values_for_mean.mean()
+    #values_for_mean = LombScargle(X, Y, Yerr, nterms = number_of_terms).model(space_for_mean, best_fit_frequency)
+    #star_mean = values_for_mean.mean()
     relative_phases =  relative_phase(1.0 / best_fit_frequency, array(X))
 
-    print("The mean apparent magnitude is", star_mean)
+    sinusoidal_model = lambda parameters, data: parameters[0] + parameters[1]*sin(2 * pi * best_fit_frequency * data + parameters[2])
+
+    [star_mean, amplitude, delta], [s_star_mean, _, _], mean_p_value, mean_SSR = general_fit(relative_phases, array(Y), sinusoidal_model, [Y[0], 1.0, 0.0], y_err = array(Yerr))
+
+    values_for_mean = sinusoidal_model([star_mean, amplitude, delta], space_for_mean)
+
+    print("The mean apparent magnitude is", star_mean, "+-", s_star_mean)
     print("which was found for a frequency of", best_fit_frequency)
+    print("and a p-value of", mean_p_value)
 
     fig_relative_diagram, ax_relative_diagram = subplots(1, 1)
     ax_relative_diagram.plot(space_for_mean, values_for_mean, 'k--', label = 'Best frequency')
@@ -176,16 +184,19 @@ def print_all_stars_separate_days(data, star_name, displayed_star_name, secondar
 
 data = pickle.load(open('Periodogram.pickle', 'rb'), encoding='latin1')
 
-secondary_flux_RR_Lyr = 8.80
-secondary_flux_FF_Aql = 9.40
-secondary_flux_V0473 = 6.69
+secondary_flux_RR_Lyr = 8.5013#8.80
+secondary_flux_RR_Lyr_error = 0.0003
+secondary_flux_FF_Aql = 8.4116#9.40
+secondary_flux_FF_Aql_error = 0.0009
+secondary_flux_V0473 = 6.8809#6.69
+secondary_flux_V0473_error = 0.0004
 
-magnitude_limits_RR_Lyr = (7.61, 8.78)
-magnitude_limits_FF_Aql = (6.10, 7.0)
-magnitude_limits_V0473 = (5.56,6.42)
+magnitude_limits_RR_Lyr = (7.3, 8.5)
+magnitude_limits_FF_Aql = (5.1, 6.0)
+magnitude_limits_V0473 = (5.75, 6.65)
 
 period_limits_RR_Lyr = (0.3, 1.0)
-period_limits_FF_Aql = (3.0, 6.0)
+period_limits_FF_Aql = (4.0, 6.0)
 period_limits_V0473 = (1.2, 10.0)
 
 if not os.path.exists('Final_Results'):
@@ -194,31 +205,34 @@ if not os.path.exists('Final_Results'):
 
 
 print('For RR  Lyr:')
-print_all_stars_separate_days(data, 'RR_Lyr', 'RR Lyr', secondary_flux_RR_Lyr, magnitude_limits_RR_Lyr, period_limits_RR_Lyr, 8.0, precision = 100000)
+print_all_stars_separate_days(data, 'RR_Lyr', 'RR Lyr', secondary_flux_RR_Lyr, secondary_flux_RR_Lyr_error, magnitude_limits_RR_Lyr, period_limits_RR_Lyr, 8.0, precision = 100000)
 figure(2).savefig('Final_Results/RR_Lyr_periodogram.pdf')
 figure(1).savefig('Final_Results/RR_Lyr_measurements.pdf')
 figure(3).savefig('Final_Results/RR_Lyr_relative_diagram.pdf')
 close(1)
 close(2)
 close(3)
+print('')
 
 print('For FF Aql:')
-print_all_stars_separate_days(data, 'FF_Aql', 'FF Aql', secondary_flux_FF_Aql, magnitude_limits_FF_Aql, period_limits_FF_Aql, 1000.0, precision = 100000)
+print_all_stars_separate_days(data, 'FF_Aql', 'FF Aql', secondary_flux_FF_Aql, secondary_flux_FF_Aql_error, magnitude_limits_FF_Aql, period_limits_FF_Aql, 600.0, precision = 100000)
 figure(2).savefig('Final_Results/FF_Aql_periodogram.pdf')
 figure(1).savefig('Final_Results/FF_Aql_measurements.pdf')
 figure(3).savefig('Final_Results/FF_Aql_relative_diagram.pdf')
 close(1)
 close(2)
 close(3)
+print('')
 
 print('For V 473 Lyr:')
-print_all_stars_separate_days(data, 'V0473', 'V 473 Lyr', secondary_flux_V0473, magnitude_limits_V0473, period_limits_V0473, 200.0, precision = 100000)
+print_all_stars_separate_days(data, 'V0473', 'V 473 Lyr', secondary_flux_V0473, secondary_flux_V0473_error, magnitude_limits_V0473, period_limits_V0473, 200.0, precision = 100000)
 figure(2).savefig('Final_Results/V0473_periodogram.pdf')
 figure(1).savefig('Final_Results/V0473_measurements.pdf')
 figure(3).savefig('Final_Results/V0473_relative_diagram.pdf')
 close(1)
 close(2)
 close(3)
+print('')
 
 
 
