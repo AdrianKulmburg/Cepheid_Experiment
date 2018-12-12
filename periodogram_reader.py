@@ -107,11 +107,10 @@ def print_all_stars_separate_days(data, star_name, displayed_star_name, secondar
     p_false_alarm = LombScargle(X, Y, Yerr, nterms = number_of_terms).false_alarm_probability(best_frequency, minimum_frequency = 1.0/T_max, maximum_frequency = 1.0/T_min)
     p_level = LombScargle(X, Y, Yerr, nterms = number_of_terms).false_alarm_level(0.001)
     print("The estimated period is", 1.0 / best_frequency, "+-", period_uncertainty)
-    if math.isnan(p_false_alarm):
-        print("The required power level for a probability of 0.001 is", p_level)
-        print("The peak in question has a power of", power[selected_peak])
-    else:
-        print("The false alarm p-value is", p_false_alarm)
+
+    print("The required power level for a probability of 0.001 is", p_level)
+    print("The peak in question has a power of", power[selected_peak])
+    print("The false alarm p-value is", p_false_alarm)
 
 
     space_for_best_fit = linspace(0.0001, 10000.0, 1000000)
